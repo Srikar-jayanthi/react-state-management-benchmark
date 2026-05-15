@@ -4,7 +4,7 @@ This document summarizes the findings from benchmarking three different state ma
 
 ## Performance Benchmark (10 "Add to Cart" Clicks)
 
-| Metric | Context (Naive) | Context (split) | Zustand | Redux Toolkit |
+| Metric | Context (naive) | Context (split) | Zustand | Redux Toolkit |
 | :--- | :--- | :--- | :--- | :--- |
 | **Total Renders (Header)** | 11 | 1 | 1 | 1 |
 | **Total Renders (UserInfo)** | 11 | 1 | 1 | 1 |
