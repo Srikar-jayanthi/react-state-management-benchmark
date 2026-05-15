@@ -4,7 +4,7 @@ This document summarizes the findings from benchmarking three different state ma
 
 ## Performance Benchmark (10 "Add to Cart" Clicks)
 
-| Metric | Context (Naive) | Context (Split) | Zustand | Redux Toolkit |
+| Metric | Context (Naive) | Context (split) | Zustand | Redux Toolkit |
 | :--- | :--- | :--- | :--- | :--- |
 | **Total Renders (Header)** | 11 | 1 | 1 | 1 |
 | **Total Renders (UserInfo)** | 11 | 1 | 1 | 1 |
@@ -52,5 +52,4 @@ This document summarizes the findings from benchmarking three different state ma
 - Your state is extremely complex and deeply nested.
 - You need a standardized way to handle complex async logic (Thunks, RTK Query).
 
-### Decision Guide
 Based on our findings, for most greenfield React projects, **Zustand** offers the best balance of performance, bundle size, and developer experience. However, for enterprise-grade applications where strict structure and time-travel debugging are essential, **Redux Toolkit** remains the industry standard.
