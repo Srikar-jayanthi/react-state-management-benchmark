@@ -1,4 +1,8 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useContext, useMemo } from 'react';
+
+export const USER_ACTIONS = {
+  SET_USER: 'SET_USER'
+};
 
 const UserContext = createContext();
 
@@ -9,7 +13,7 @@ const initialUserState = {
 
 function userReducer(state, action) {
   switch (action.type) {
-    case 'SET_USER':
+    case USER_ACTIONS.SET_USER:
       return { ...state, ...action.payload };
     default:
       return state;
@@ -18,8 +22,9 @@ function userReducer(state, action) {
 
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialUserState);
+  const value = useMemo(() => ({ state, dispatch }), [state]);
   return (
-    <UserContext.Provider value={{ state, dispatch }}>
+    <UserContext.Provider value={value}>
       {children}
     </UserContext.Provider>
   );

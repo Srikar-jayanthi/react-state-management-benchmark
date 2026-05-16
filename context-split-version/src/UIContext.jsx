@@ -1,4 +1,9 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useContext, useMemo } from 'react';
+
+export const UI_ACTIONS = {
+  TOGGLE_THEME: 'TOGGLE_THEME',
+  SET_NOTIFICATION: 'SET_NOTIFICATION'
+};
 
 const UIContext = createContext();
 
@@ -9,8 +14,10 @@ const initialUIState = {
 
 function uiReducer(state, action) {
   switch (action.type) {
-    case 'TOGGLE_THEME':
+    case UI_ACTIONS.TOGGLE_THEME:
       return { ...state, theme: state.theme === 'light' ? 'dark' : 'light' };
+    case UI_ACTIONS.SET_NOTIFICATION:
+      return { ...state, notification: action.payload };
     default:
       return state;
   }
@@ -18,8 +25,9 @@ function uiReducer(state, action) {
 
 export const UIProvider = ({ children }) => {
   const [state, dispatch] = useReducer(uiReducer, initialUIState);
+  const value = useMemo(() => ({ state, dispatch }), [state]);
   return (
-    <UIContext.Provider value={{ state, dispatch }}>
+    <UIContext.Provider value={value}>
       {children}
     </UIContext.Provider>
   );

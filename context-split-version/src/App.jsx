@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
-import { CartProvider, useCartContext } from './CartContext';
+import { CartProvider, useCartContext, CART_ACTIONS } from './CartContext';
 import { UserProvider, useUserContext } from './UserContext';
-import { UIProvider, useUIContext } from './UIContext';
+import { UIProvider, useUIContext, UI_ACTIONS } from './UIContext';
 import { Header, UserInfo, CartItemCount, ThemeSwitcher } from './components/Header';
 import { ProductListPage } from './components/ProductListPage';
 import { CartSidebar } from './components/CartComponents';
@@ -17,7 +17,7 @@ const CartItemCountContainer = memo(() => {
   const { state, dispatch } = useCartContext();
   const count = state.items.reduce((acc, item) => acc + item.quantity, 0);
   return (
-    <div onClick={() => dispatch({ type: 'TOGGLE_CART' })} style={{ cursor: 'pointer' }}>
+    <div onClick={() => dispatch({ type: CART_ACTIONS.TOGGLE_CART })} style={{ cursor: 'pointer' }}>
       <CartItemCount count={count} />
     </div>
   );
@@ -25,12 +25,12 @@ const CartItemCountContainer = memo(() => {
 
 const ThemeSwitcherContainer = memo(() => {
   const { state, dispatch } = useUIContext();
-  return <ThemeSwitcher theme={state.theme} onToggle={() => dispatch({ type: 'TOGGLE_THEME' })} />;
+  return <ThemeSwitcher theme={state.theme} onToggle={() => dispatch({ type: UI_ACTIONS.TOGGLE_THEME })} />;
 });
 
 const ProductListContainer = memo(() => {
   const { dispatch } = useCartContext();
-  return <ProductListPage products={PRODUCTS} onAddToCart={(p) => dispatch({ type: 'ADD_TO_CART', payload: p })} />;
+  return <ProductListPage products={PRODUCTS} onAddToCart={(p) => dispatch({ type: CART_ACTIONS.ADD_TO_CART, payload: p })} />;
 });
 
 const CartSidebarContainer = memo(() => {
@@ -39,9 +39,9 @@ const CartSidebarContainer = memo(() => {
     <CartSidebar 
       items={state.items} 
       isOpen={state.isOpen} 
-      onClose={() => dispatch({ type: 'TOGGLE_CART' })} 
-      onUpdateQuantity={(id, q) => dispatch({ type: 'UPDATE_QUANTITY', payload: { productId: id, quantity: q } })} 
-      onRemove={(id) => dispatch({ type: 'REMOVE_FROM_CART', payload: id })} 
+      onClose={() => dispatch({ type: CART_ACTIONS.TOGGLE_CART })} 
+      onUpdateQuantity={(id, q) => dispatch({ type: CART_ACTIONS.UPDATE_QUANTITY, payload: { productId: id, quantity: q } })} 
+      onRemove={(id) => dispatch({ type: CART_ACTIONS.REMOVE_FROM_CART, payload: id })} 
     />
   );
 });
