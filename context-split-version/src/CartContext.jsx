@@ -1,4 +1,11 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useContext, useMemo } from 'react';
+
+export const CART_ACTIONS = {
+  ADD_TO_CART: 'ADD_TO_CART',
+  UPDATE_QUANTITY: 'UPDATE_QUANTITY',
+  REMOVE_FROM_CART: 'REMOVE_FROM_CART',
+  TOGGLE_CART: 'TOGGLE_CART'
+};
 
 const CartContext = createContext();
 
@@ -9,7 +16,7 @@ const initialCartState = {
 
 function cartReducer(state, action) {
   switch (action.type) {
-    case 'ADD_TO_CART': {
+    case CART_ACTIONS.ADD_TO_CART: {
       const existingItem = state.items.find(item => item.productId === action.payload.id);
       if (existingItem) {
         return {
@@ -26,7 +33,7 @@ function cartReducer(state, action) {
         items: [...state.items, { productId: action.payload.id, name: action.payload.name, quantity: 1, price: action.payload.price }]
       };
     }
-    case 'UPDATE_QUANTITY':
+    case CART_ACTIONS.UPDATE_QUANTITY:
       return {
         ...state,
         items: state.items.map(item =>
@@ -35,12 +42,12 @@ function cartReducer(state, action) {
             : item
         ).filter(item => item.quantity > 0)
       };
-    case 'REMOVE_FROM_CART':
+    case CART_ACTIONS.REMOVE_FROM_CART:
       return {
         ...state,
         items: state.items.filter(item => item.productId !== action.payload)
       };
-    case 'TOGGLE_CART':
+    case CART_ACTIONS.TOGGLE_CART:
       return { ...state, isOpen: !state.isOpen };
     default:
       return state;
@@ -49,8 +56,9 @@ function cartReducer(state, action) {
 
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialCartState);
+  const value = useMemo(() => ({ state, dispatch }), [state]);
   return (
-    <CartContext.Provider value={{ state, dispatch }}>
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );
