@@ -1,10 +1,15 @@
 # Stage 1: Build
 FROM node:20-alpine AS build
 WORKDIR /app
+
+# Copy package files and install dependencies
 COPY redux-version/package*.json ./
 RUN npm install
+
+# Copy source code (already includes synced shared assets)
 COPY redux-version/ ./
-COPY shared-assets/ ./src/ # Ensure shared assets are available during build if needed
+
+# Build the production bundle
 RUN npm run build
 
 # Stage 2: Serve
