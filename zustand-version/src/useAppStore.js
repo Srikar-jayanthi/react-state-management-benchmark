@@ -14,45 +14,57 @@ export const useAppStore = create((set) => ({
     notification: null,
   },
   
-  addToCart: (product) => set((state) => {
-    const existingItem = state.cart.items.find(item => item.productId === product.id);
-    if (existingItem) {
+  addToCart: (product) => {
+    if (!product || !product.id) return;
+    
+    set((state) => {
+      const existingItem = state.cart.items.find(item => item.productId === product.id);
+      if (existingItem) {
+        return {
+          cart: {
+            ...state.cart,
+            items: state.cart.items.map(item =>
+              item.productId === product.id
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
+            )
+          }
+        };
+      }
       return {
         cart: {
           ...state.cart,
-          items: state.cart.items.map(item =>
-            item.productId === product.id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          )
+          items: [...state.cart.items, { productId: product.id, name: product.name, quantity: 1, price: product.price }]
         }
       };
-    }
-    return {
+    });
+  },
+
+  updateQuantity: (productId, quantity) => {
+    if (!productId) return;
+    
+    set((state) => ({
       cart: {
         ...state.cart,
-        items: [...state.cart.items, { productId: product.id, name: product.name, quantity: 1, price: product.price }]
+        items: state.cart.items.map(item =>
+          item.productId === productId
+            ? { ...item, quantity: Math.max(0, quantity) }
+            : item
+        ).filter(item => item.quantity > 0)
       }
-    };
-  }),
+    }));
+  },
 
-  updateQuantity: (productId, quantity) => set((state) => ({
-    cart: {
-      ...state.cart,
-      items: state.cart.items.map(item =>
-        item.productId === productId
-          ? { ...item, quantity: Math.max(0, quantity) }
-          : item
-      ).filter(item => item.quantity > 0)
-    }
-  })),
-
-  removeFromCart: (productId) => set((state) => ({
-    cart: {
-      ...state.cart,
-      items: state.cart.items.filter(item => item.productId !== productId)
-    }
-  })),
+  removeFromCart: (productId) => {
+    if (!productId) return;
+    
+    set((state) => ({
+      cart: {
+        ...state.cart,
+        items: state.cart.items.filter(item => item.productId !== productId)
+      }
+    }));
+  },
 
   toggleCart: () => set((state) => ({
     cart: { ...state.cart, isOpen: !state.cart.isOpen }
