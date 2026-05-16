@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppProvider, useAppContext } from './AppContext';
+import { AppProvider, useAppContext, APP_ACTIONS } from './AppContext';
 import { Header, UserInfo, CartItemCount, ThemeSwitcher } from './components/Header';
 import { ProductListPage } from './components/ProductListPage';
 import { CartSidebar } from './components/CartComponents';
@@ -19,12 +19,12 @@ const CartItemCountContainer = ({ onToggle }) => {
 
 const ThemeSwitcherContainer = () => {
   const { state, dispatch } = useAppContext();
-  return <ThemeSwitcher theme={state.ui.theme} onToggle={() => dispatch({ type: 'TOGGLE_THEME' })} />;
+  return <ThemeSwitcher theme={state.ui.theme} onToggle={() => dispatch({ type: APP_ACTIONS.TOGGLE_THEME })} />;
 };
 
 const ProductListContainer = () => {
   const { dispatch } = useAppContext();
-  return <ProductListPage products={PRODUCTS} onAddToCart={(p) => dispatch({ type: 'ADD_TO_CART', payload: p })} />;
+  return <ProductListPage products={PRODUCTS} onAddToCart={(p) => dispatch({ type: APP_ACTIONS.ADD_TO_CART, payload: p })} />;
 };
 
 const CartSidebarContainer = () => {
@@ -33,9 +33,9 @@ const CartSidebarContainer = () => {
     <CartSidebar 
       items={state.cart.items} 
       isOpen={state.cart.isOpen} 
-      onClose={() => dispatch({ type: 'TOGGLE_CART' })} 
-      onUpdateQuantity={(id, q) => dispatch({ type: 'UPDATE_QUANTITY', payload: { productId: id, quantity: q } })} 
-      onRemove={(id) => dispatch({ type: 'REMOVE_FROM_CART', payload: id })} 
+      onClose={() => dispatch({ type: APP_ACTIONS.TOGGLE_CART })} 
+      onUpdateQuantity={(id, q) => dispatch({ type: APP_ACTIONS.UPDATE_QUANTITY, payload: { productId: id, quantity: q } })} 
+      onRemove={(id) => dispatch({ type: APP_ACTIONS.REMOVE_FROM_CART, payload: id })} 
     />
   );
 };
@@ -48,7 +48,7 @@ function AppContent() {
       <Header>
         <UserInfoContainer />
         <ThemeSwitcherContainer />
-        <CartItemCountContainer onToggle={() => dispatch({ type: 'TOGGLE_CART' })} />
+        <CartItemCountContainer onToggle={() => dispatch({ type: APP_ACTIONS.TOGGLE_CART })} />
       </Header>
       <main>
         <ProductListContainer />

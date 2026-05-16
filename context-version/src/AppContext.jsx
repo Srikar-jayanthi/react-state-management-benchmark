@@ -1,4 +1,12 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useContext, useMemo } from 'react';
+
+export const APP_ACTIONS = {
+  ADD_TO_CART: 'ADD_TO_CART',
+  UPDATE_QUANTITY: 'UPDATE_QUANTITY',
+  REMOVE_FROM_CART: 'REMOVE_FROM_CART',
+  TOGGLE_CART: 'TOGGLE_CART',
+  TOGGLE_THEME: 'TOGGLE_THEME'
+};
 
 const AppContext = createContext();
 
@@ -19,7 +27,8 @@ const initialState = {
 
 function appReducer(state, action) {
   switch (action.type) {
-    case 'ADD_TO_CART': {
+    case APP_ACTIONS.ADD_TO_CART: {
+      if (!action.payload || !action.payload.id) return state;
       const existingItem = state.cart.items.find(item => item.productId === action.payload.id);
       if (existingItem) {
         return {
@@ -42,19 +51,22 @@ function appReducer(state, action) {
         }
       };
     }
-    case 'UPDATE_QUANTITY':
+    case APP_ACTIONS.UPDATE_QUANTITY: {
+      const { productId, quantity } = action.payload;
+      if (!productId) return state;
       return {
         ...state,
         cart: {
           ...state.cart,
           items: state.cart.items.map(item =>
-            item.productId === action.payload.productId
-              ? { ...item, quantity: Math.max(0, action.payload.quantity) }
+            item.productId === productId
+              ? { ...item, quantity: Math.max(0, quantity) }
               : item
           ).filter(item => item.quantity > 0)
         }
       };
-    case 'REMOVE_FROM_CART':
+    }
+    case APP_ACTIONS.REMOVE_FROM_CART:
       return {
         ...state,
         cart: {
@@ -62,12 +74,12 @@ function appReducer(state, action) {
           items: state.cart.items.filter(item => item.productId !== action.payload)
         }
       };
-    case 'TOGGLE_CART':
+    case APP_ACTIONS.TOGGLE_CART:
       return {
         ...state,
         cart: { ...state.cart, isOpen: !state.cart.isOpen }
       };
-    case 'TOGGLE_THEME':
+    case APP_ACTIONS.TOGGLE_THEME:
       return {
         ...state,
         ui: { ...state.ui, theme: state.ui.theme === 'light' ? 'dark' : 'light' }
@@ -79,8 +91,9 @@ function appReducer(state, action) {
 
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
+  const value = useMemo(() => ({ state, dispatch }), [state]);
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={value}>
       {children}
     </AppContext.Provider>
   );
