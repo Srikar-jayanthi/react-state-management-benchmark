@@ -8,6 +8,8 @@ const cartSlice = createSlice({
   },
   reducers: {
     addToCart: (state, action) => {
+      if (!action.payload || !action.payload.id) return;
+      
       const existingItem = state.items.find(item => item.productId === action.payload.id);
       if (existingItem) {
         existingItem.quantity += 1;
@@ -22,6 +24,8 @@ const cartSlice = createSlice({
     },
     updateQuantity: (state, action) => {
       const { productId, quantity } = action.payload;
+      if (!productId) return;
+      
       const item = state.items.find(item => item.productId === productId);
       if (item) {
         item.quantity = Math.max(0, quantity);
@@ -31,6 +35,7 @@ const cartSlice = createSlice({
       }
     },
     removeFromCart: (state, action) => {
+      if (!action.payload) return;
       state.items = state.items.filter(item => item.productId !== action.payload);
     },
     toggleCart: (state) => {
