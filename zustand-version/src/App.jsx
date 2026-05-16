@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { useAppStore } from './useAppStore';
+import { useAppStore } from './store/useAppStore';
 import { Header, UserInfo, CartItemCount, ThemeSwitcher } from './components/Header';
 import { ProductListPage } from './components/ProductListPage';
 import { CartSidebar } from './components/CartComponents';
