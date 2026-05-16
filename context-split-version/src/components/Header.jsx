@@ -1,28 +1,28 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { RenderCount } from './RenderCount';
 
-export const UserInfo = ({ name }) => (
+export const UserInfo = memo(({ name }) => (
   <div className="user-info">
     <span>Welcome, {name}</span>
     <RenderCount />
   </div>
-);
+));
 
-export const CartItemCount = ({ count }) => (
+export const CartItemCount = memo(({ count }) => (
   <div className="cart-item-count">
     <span>Cart ({count})</span>
     <RenderCount />
   </div>
-);
+));
 
-export const ThemeSwitcher = ({ theme, onToggle }) => (
+export const ThemeSwitcher = memo(({ theme, onToggle }) => (
   <button onClick={onToggle}>
     Theme: {theme}
     <RenderCount />
   </button>
-);
+));
 
-export const Header = ({ children }) => {
+export const Header = memo(({ children }) => {
   return (
     <header className="header">
       <h1>ShopApp <RenderCount /></h1>
@@ -31,4 +31,4 @@ export const Header = ({ children }) => {
       </div>
     </header>
   );
-};
+});

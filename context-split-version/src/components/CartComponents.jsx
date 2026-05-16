@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { RenderCount } from './RenderCount';
 
-export const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
+export const CartItem = memo(({ item, onUpdateQuantity, onRemove }) => {
   return (
     <div className="cart-item">
       <div>
@@ -15,9 +15,9 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
       </div>
     </div>
   );
-};
+});
 
-export const CartSidebar = ({ items, isOpen, onClose, onUpdateQuantity, onRemove }) => {
+export const CartSidebar = memo(({ items, isOpen, onClose, onUpdateQuantity, onRemove }) => {
   const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   if (!isOpen) return null;
@@ -44,4 +44,4 @@ export const CartSidebar = ({ items, isOpen, onClose, onUpdateQuantity, onRemove
       </div>
     </div>
   );
-};
+});

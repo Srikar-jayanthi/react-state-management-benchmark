@@ -4,6 +4,8 @@ This repository contains a comprehensive comparison of three popular React state
 
 The goal of this project is to benchmark performance (specifically re-renders), bundle size impact, and developer experience (boilerplate and API ergonomics) by implementing the same shopping cart application three times.
 
+[**View Detailed Walkthrough & Visuals 🚀**](./WALKTHROUGH.md)
+
 ## 🚀 Implementations
 
 1.  **React Context API (`/context-version`)**

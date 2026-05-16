@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { ProductCard } from './ProductCard';
 import { RenderCount } from './RenderCount';
 
-export const ProductListPage = ({ products, onAddToCart }) => {
+export const ProductListPage = memo(({ products, onAddToCart }) => {
   return (
     <div className="product-list-page">
       <h2>Products <RenderCount /></h2>
@@ -17,4 +17,4 @@ export const ProductListPage = ({ products, onAddToCart }) => {
       </div>
     </div>
   );
-};
+});
